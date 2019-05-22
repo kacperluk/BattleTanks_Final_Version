@@ -3,8 +3,10 @@
 #include "Projectile.h"
 #include "Engine/Classes/Components/StaticMeshComponent.h"
 
-#include "Runtime/Engine/Classes/Components/PrimitiveComponent.h"
-#include "Runtime/Engine/Classes/PhysicsEngine/RadialForceComponent.h"
+#include "Engine/Public/TimerManager.h"
+
+#include "Engine/Classes/Components/PrimitiveComponent.h"
+#include "Engine/Classes/PhysicsEngine/RadialForceComponent.h"
 #include "Engine/Classes/Particles/ParticleSystemComponent.h"
 #include "Engine/Classes/Engine/EngineTypes.h"
 // Sets default values
@@ -43,14 +45,21 @@ void AProjectile::LaunchProjectile(float Speed) {
 
 	ProjectileMovment->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
 	ProjectileMovment->Activate();
-
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComponent, FVector NormalImpulse,
 	const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Your sadasdasde2134message"));
 	ExplosionForce->FireImpulse();
 	ImpactBlast1->ActivateSystem(true);
+
+	SetRootComponent(ImpactBlast1);
+	CollisionMesh->DestroyComponent();
+	FTimerHandle Timer;
+	GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyingDelay,false);
+}
+void AProjectile::OnTimerExpire()
+{
+	this->Destroy();
 }
