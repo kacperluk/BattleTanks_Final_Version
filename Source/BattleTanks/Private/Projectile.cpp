@@ -4,6 +4,8 @@
 #include "Engine/Classes/Components/StaticMeshComponent.h"
 
 #include "Engine/Public/TimerManager.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
+#include "Engine/Classes/GameFramework/DamageType.h"
 
 #include "Engine/Classes/Components/PrimitiveComponent.h"
 #include "Engine/Classes/PhysicsEngine/RadialForceComponent.h"
@@ -56,6 +58,17 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 
 	SetRootComponent(ImpactBlast1);
 	CollisionMesh->DestroyComponent();
+
+	UGameplayStatics::ApplyRadialDamage(
+		this,
+		ProjectileDamage,
+		GetActorLocation(),
+		ExplosionForce->Radius,	// this way it will always corresopnd value in blueprint
+		UDamageType::StaticClass(),
+		TArray<AActor*>()		// we want to dmg all actors
+	);
+
+
 	FTimerHandle Timer;
 	GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyingDelay,false);
 }
