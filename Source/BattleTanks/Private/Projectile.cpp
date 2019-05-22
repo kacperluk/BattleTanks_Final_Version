@@ -29,6 +29,7 @@ AProjectile::AProjectile()
 	ProjectileMovment->bAutoActivate = false;
 
 	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>("Explosion Force");
+	ExplosionForce->AttachToComponent(CollisionMesh, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -50,5 +51,6 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	const FHitResult& Hit)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Your sadasdasde2134message"));
+	ExplosionForce->FireImpulse();
 	ImpactBlast1->ActivateSystem(true);
 }
