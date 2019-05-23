@@ -9,11 +9,12 @@
 class UTankBarrel;	// forward declarations
 class AProjectile;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTank);
+
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
 {
 	GENERATED_BODY()
-
 public:
 	// Sets default values for this pawn's properties
 	ATank();
@@ -26,6 +27,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetHealthPercent() const;
+	FTank OnTankDeath;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -35,7 +37,5 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int32 CurrentHealth = StartingHealth;
-
-	
 
 };

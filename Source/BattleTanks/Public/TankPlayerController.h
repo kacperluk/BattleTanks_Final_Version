@@ -8,9 +8,7 @@
 
 class ATank;
 class UTankAiminngComponent;
-/*
- * Responsible for helping the player aim
- */
+
 UCLASS()
 class BATTLETANKS_API ATankPlayerController : public APlayerController
 {
@@ -32,7 +30,11 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 		void FoundAimingComponent(UTankAiminngComponent* AimingCompRef);
 private:
-	
+	// Called when tank is being possesed
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+		void OnTankDeath();
 
 	// Returns an OUT parameter , true if hit landscape
 	bool GetSightRayHitLocation(FVector &HitLocation) const;

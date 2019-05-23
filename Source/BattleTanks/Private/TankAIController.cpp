@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "TankAiminngComponent.h"
 #include "TankPlayerController.h"
+#include "Tank.h"
 #include "Engine/World.h"
 
 
@@ -34,4 +35,21 @@ void ATankAIController::Tick(float DeltaTime)
 		AimingComponent->Fire(); // TODO Dont fire every frame like a retard
 		return;
 	}
+}
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if(InPawn)
+	{
+		auto PossesedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossesedTank)) { return; }
+
+		// Subscribe our local method to the tanks death event
+		PossesedTank->OnTankDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
+	}
+}
+void ATankAIController::OnTankDeath() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s DIED"), *this->GetName());
 }

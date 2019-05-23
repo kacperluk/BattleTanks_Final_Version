@@ -22,5 +22,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float AcceptanceRadius = 3000;
 private:
-	
+	// Called when tank is being possesed
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+		void OnTankDeath();
 };
