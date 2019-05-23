@@ -10,10 +10,10 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 void ATankAIController::Tick(float DeltaTime)
 {
+	if (bControlledTankAlive != true) { return; }
 	Super::Tick(DeltaTime);
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	auto ControlledTank = Cast<ATank>(GetPawn());
@@ -52,4 +52,5 @@ void ATankAIController::SetPawn(APawn* InPawn)
 void ATankAIController::OnTankDeath() 
 {
 	UE_LOG(LogTemp, Warning, TEXT("%s DIED"), *this->GetName());
+	bControlledTankAlive = false;
 }

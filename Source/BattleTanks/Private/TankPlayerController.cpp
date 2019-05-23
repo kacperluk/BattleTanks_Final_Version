@@ -34,7 +34,8 @@ void ATankPlayerController::BeginPlay()
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AimTowardsCroshair();
+	if(bSpectatorModeActive == false)
+		AimTowardsCroshair();
 }
 
 void ATankPlayerController::AimTowardsCroshair()
@@ -113,5 +114,8 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 
 void ATankPlayerController::OnTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s DIED"), *this->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("You Died"), *this->GetName());
+	
+	bSpectatorModeActive = true;
+	this->StartSpectatingOnly();
 }

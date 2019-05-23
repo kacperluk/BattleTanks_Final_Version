@@ -18,7 +18,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-
+	CurrentHealth = StartingHealth;
 }
 
 float ATank::TakeDamage(float DamageAmount,
@@ -31,8 +31,8 @@ float ATank::TakeDamage(float DamageAmount,
 	CurrentHealth -= DamageToApply;
 	if (CurrentHealth <= 0)
 	{
-		
 		OnTankDeath.Broadcast();
+		this->DetachFromControllerPendingDestroy();
 	}
 	return DamageToApply;
 }

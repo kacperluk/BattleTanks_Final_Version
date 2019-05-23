@@ -54,5 +54,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		float LineTraceRange = 1000000;
+
+	bool bSpectatorModeActive = false;
 	
 };

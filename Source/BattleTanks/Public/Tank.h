@@ -31,11 +31,11 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-private:
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	int32 StartingHealth = 100;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Health")
-	int32 CurrentHealth = StartingHealth;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		int32 StartingHealth = 100;
+
+	//initialized in BeginPlay
+	UPROPERTY(VisibleAnywhere, Category = "Health")
+		int32 CurrentHealth;	
 };

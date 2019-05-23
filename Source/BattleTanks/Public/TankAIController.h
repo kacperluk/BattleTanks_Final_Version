@@ -27,4 +27,6 @@ private:
 
 	UFUNCTION()
 		void OnTankDeath();
+
+	bool bControlledTankAlive = true;
 };
