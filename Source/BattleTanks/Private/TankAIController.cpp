@@ -13,13 +13,14 @@ void ATankAIController::BeginPlay()
 }
 void ATankAIController::Tick(float DeltaTime)
 {
-	if (bControlledTankAlive != true) { return; }
 	Super::Tick(DeltaTime);
+	if (bControlledTankAlive != true) { return; }
+	
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	auto ControlledTank = Cast<ATank>(GetPawn());
 
 	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAiminngComponent>();
-	if (!ensure(AimingComponent)) { return; }
+	//if (!ensure(AimingComponent)) { return; }
 	
 	if(PlayerTank)
 	{
@@ -43,7 +44,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 	if(InPawn)
 	{
 		auto PossesedTank = Cast<ATank>(InPawn);
-		if (!ensure(PossesedTank)) { return; }
+		if (!(PossesedTank)) { return; }
 
 		// Subscribe our local method to the tanks death event
 		PossesedTank->OnTankDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
