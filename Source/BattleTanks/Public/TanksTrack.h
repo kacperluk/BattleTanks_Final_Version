@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SprungWheel.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TanksTrack.generated.h"
@@ -17,23 +18,18 @@ public:
 	UFUNCTION(BlueprintCallable , Category = Input)
 		void SetThrottle(float Throttle);
 
-	void DriveTrack();
+	void DriveTrack(float CurrentThrottle);
 
 	UTanksTrack();
 	// Max force per track, in Newtons
 	UPROPERTY(EditAnywhere, Category = Physics)
 		float TrackMaxDrivingForce = 35000000; // Assume 40 tonne tank, and 1g accelleration
-protected:
 
-	void ApplySidewaysForce();
+	TArray<ASprungWheel*> GetWheels() const;
+protected:
 	
 	virtual void BeginPlay() override;
 private:
-	UFUNCTION()
-		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
-					UPrimitiveComponent* OtherComponent, FVector NormalImpulse ,
-					const FHitResult& Hit);
 
-	float CurrentThrottle = 0;
 
 };
