@@ -1,38 +1,45 @@
 // Copyright BadGamesButCheap
 
-#include "Engine/Classes/Components/StaticMeshComponent.h"
+
 
 #include "SprungWheel.h"
+#include "Engine/Classes/Components/StaticMeshComponent.h"
+
 
 // Sets default values
 ASprungWheel::ASprungWheel()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	MassWheelConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("MassWheelConstraint"));
 	SetRootComponent(MassWheelConstraint);
 
-	Mass = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mass"));
-	Mass->AttachToComponent(MassWheelConstraint, FAttachmentTransformRules::KeepRelativeTransform);
+	Axle1 = CreateDefaultSubobject<USphereComponent>(FName("Axle1"));
+	Axle1->SetupAttachment(MassWheelConstraint);
 
-	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
-	Wheel->AttachToComponent(MassWheelConstraint, FAttachmentTransformRules::KeepRelativeTransform);
-
+	Wheel1 = CreateDefaultSubobject<USphereComponent>(FName("Wheel1"));
+	Wheel1->SetupAttachment(Axle1);
 	
+	AxleWheelConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("AxleWheelConstraint"));
+	AxleWheelConstraint->SetupAttachment(Axle1);
+
 }
 
 // Called when the game starts or when spawned
 void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
-
+	SetupConstraint();
+}
+void ASprungWheel::SetupConstraint(){
 	if (GetAttachParentActor())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Not NullPTR"));
+		UPrimitiveComponent* BodyRoot = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
+		MassWheelConstraint->SetConstrainedComponents(BodyRoot, NAME_None, Axle1, NAME_None);
+
+		AxleWheelConstraint->SetConstrainedComponents(Axle1, NAME_None, Wheel1, NAME_None);
 	}
-	else
-		UE_LOG(LogTemp, Warning, TEXT("NullPTR"));
 }
 
 // Called every frame
