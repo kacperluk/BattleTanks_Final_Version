@@ -7,12 +7,14 @@
 UTanksTrack::UTanksTrack() 
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	SetNotifyRigidBodyCollision(true);
+	SetNotifyRigidBodyCollision(false);
+	//this->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	this->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void UTanksTrack::SetThrottle(float Throttle) 
 {
-	float CurrentThrottle = FMath::Clamp<float>(Throttle, -1, 1);
+	float CurrentThrottle = FMath::Clamp<float>(Throttle, -1.5, 1.5);
 	DriveTrack(CurrentThrottle);
 }
 void UTanksTrack::DriveTrack(float CurrentThrottle)
@@ -28,7 +30,10 @@ void UTanksTrack::DriveTrack(float CurrentThrottle)
 }
 
 TArray<ASprungWheel*> UTanksTrack::GetWheels() const
-{/*
+{
+	
+	//TODO  Check why this code did not worked
+	/*
 	TArray<USceneComponent*> SpawnPoints;
 	TArray<USceneComponent*> SprungWheels;
 	TArray<ASprungWheel*> ConvertedSprungWheels;
